@@ -82,16 +82,22 @@ service CrontabService {
     }
 
     //Список запущенных вручную задач
-    rpc getExecuteCommandList (GetExecuteCommandListResponse) returns (GetExecuteCommandListRequest) {
+    rpc getExecutedCommandList (GetExecutedCommandListResponse) returns (GetExecutedCommandListRequest) {
         option (google.api.http) = {
             get: "/v1/crontab/command/all"
+        };
+    }
+
+    rpc getExecutedCommand (GetExecutedCommandRequest) returns (GetExecutedCommandResponse) {
+        option (google.api.http) = {
+            get: "/v1/crontab/command/{manual_job_id}"
         };
     }
 
     //Возвращает вывод задачи, которая была запущена через API/CP вручную
     rpc getJobOutput (GetJobOutputRequest) returns (GetJobOutputResponse) {
         option (google.api.http) = {
-            get: "/v1/crontab/command/{manual_job_id}"
+            post: "/v1/crontab/command/{manual_job_id}"
         };
     }
 }
@@ -341,10 +347,10 @@ message GetJobOutputResponse {
     }
 }
 
-message GetExecuteCommandListRequest {
+message GetExecutedCommandListRequest {
 }
 
-message GetExecuteCommandListResponse {
+message GetExecutedCommandListResponse {
     oneof result {
         Success success = 1;
         Error error = 2;
@@ -352,6 +358,26 @@ message GetExecuteCommandListResponse {
 
     message Success {
         repeated structures.ExecutedCommand command = 1;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}
+
+message GetExecutedCommandRequest {
+    uint32 manual_job_id = 1;
+}
+
+message GetExecutedCommandResponse {
+    oneof result {
+        structures.ExecutedCommand command = 1;
+        Error error = 2;
     }
 
     message Error {
