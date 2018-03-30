@@ -62,18 +62,18 @@ service CrontabService {
     //Включение задания
     rpc enableJob (EnableJobRequest) returns (EnableJobResponse) {
         option (google.api.http) = {
-            patch: "/v1/crontab/enable/{id}"
+            post: "/v1/crontab/enable/{id}"
         };
     }
 
     //Отключение задания
     rpc disableJob (DisableJobRequest) returns (DisableJobResponse) {
         option (google.api.http) = {
-            patch: "/v1/crontab/disable/{id}"
+            post: "/v1/crontab/disable/{id}"
         };
     }
 
-    //Запускает задачу из имеющихся или произвольную команду
+    //Запускает произвольную команду
     rpc executeCommand (ExecuteCommandRequest) returns (ExecuteCommandResponse) {
         option (google.api.http) = {
             post: "/v1/crontab/command"
@@ -81,16 +81,17 @@ service CrontabService {
         };
     }
 
+    //Список запущенных вручную задач
     rpc getExecuteCommandList (GetExecuteCommandListResponse) returns (GetExecuteCommandListRequest) {
         option (google.api.http) = {
             get: "/v1/crontab/command/all"
         };
     }
 
-    //Возвращает вывод
+    //Возвращает вывод задачи, которая была запущена через API/CP вручную
     rpc getJobOutput (GetJobOutputRequest) returns (GetJobOutputResponse) {
         option (google.api.http) = {
-            get: "/v1/crontab/command/{id}"
+            get: "/v1/crontab/command/{manual_job_id}"
         };
     }
 }
@@ -321,7 +322,7 @@ message ExecuteCommandResponse {
 }
 
 message GetJobOutputRequest {
-    uint32 id = 1;
+    uint32 manual_job_id = 1;
 }
 
 message GetJobOutputResponse {
