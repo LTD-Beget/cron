@@ -250,6 +250,7 @@ message DeleteJobResponse {
 }
 
 message EditJobRequest {
+    //ID задачи
     uint32 id = 1;
     //Минуты, в которые выполняется задание. Могут быть от 0 до 59
     string minutes = 3;
@@ -328,7 +329,7 @@ message ExecuteCommandRequest {
 
 message ExecuteCommandResponse {
     oneof result {
-        uint32 id = 1;
+        uint32 manual_job_id = 1;
         Error error = 2;
     }
 
