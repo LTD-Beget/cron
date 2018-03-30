@@ -5,9 +5,6 @@ package beget.crontab.v1.crontab;
 import "crontab/proto/v1/structures.proto";
 import "google/api/annotations.proto";
 
-message DummyRequest{};
-message DummyResponse{};
-
 service CrontabService {
     //Выводит полный список заданий пользователя
     rpc findAll (FindAllRequest) returns (FindAllResponse) {
