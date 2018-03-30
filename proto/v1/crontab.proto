@@ -192,12 +192,19 @@ message SetNotificationEmailResponse {
 }
 
 message CreateJobRequest {
+    //Минуты, в которые выполняется задание. Могут быть от 0 до 59
     string minutes = 1;
+    //Часы выполнения, от 0 до 23
     string hours = 2;
+    //День месяца, от 1 до 31
     string days = 3;
+    //Месяц, от 1 до 12
     string months = 4;
+    //День недели, от 0 до 7, где 0 и 7 - воскресенье
     string weekdays = 5;
+    //Выполняемая команда
     string command = 6;
+    //Комментарий к задаче
     string comment = 7;
 }
 
@@ -244,12 +251,19 @@ message DeleteJobResponse {
 
 message EditJobRequest {
     uint32 id = 1;
+    //Минуты, в которые выполняется задание. Могут быть от 0 до 59
     string minutes = 3;
+    //Часы выполнения, от 0 до 23
     string hours = 4;
+    //День месяца, от 1 до 31
     string days = 5;
+    //Месяц, от 1 до 12
     string months = 6;
+    //День недели, от 0 до 7, где 0 и 7 - воскресенье
     string weekdays = 7;
+    //Выполняемая команда
     string command = 8;
+    //Комментарий к задаче
     string comment = 9;
 }
 
