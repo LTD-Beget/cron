@@ -1,0 +1,41 @@
+syntax = 'proto3';
+
+package beget.crontab.v1.structures;
+
+message CrontabJob {
+    uint32 id = 1;
+    //Минуты, в которые выполняется задание. Могут быть от 0 до 59
+    string minutes = 2;
+    //Часы выполнения, от 0 до 23
+    string hours = 3;
+    //День месяца, от 1 до 31
+    string day_of_month = 4;
+    //Месяц, от 1 до 12
+    string month = 5;
+    //День недели, от 0 до 7, где 0 и 7 - воскресенье
+    string day_of_week = 6;
+    //Выполняемая команда
+    string command = 7;
+    //Активно ли выполнение задачи по расписанию
+    bool enabled = 8;
+    //Комментарий к задаче
+    string comment = 9;
+}
+
+message ExecutedCommand {
+    uint32 id = 1;
+    string date = 2;
+    string command = 3;
+    Status status = 4;
+
+    message Status {
+        enum Status {
+            PENDING = 0;
+            STARTED = 1;
+            SUCCESS = 2;
+            ERROR = 3;
+            TIMEOUT = 4;
+            INTERNAL_ERROR = 5;
+        }
+    }
+}
