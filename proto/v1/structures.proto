@@ -17,13 +17,17 @@ message CrontabJob {
 message ExecutedCommand {
     uint32 id = 1;
     string date = 2;
-    Status status = 3;
+    string command = 3;
+    Status status = 4;
 
     message Status {
         enum Status {
-            FINISHED = 0;
-            FAILED = 1;
-            IN_PROGRESS = 2;
+            PENDING = 0;
+            STARTED = 1;
+            SUCCESS = 2;
+            ERROR = 3;
+            TIMEOUT = 4;
+            INTERNAL_ERROR = 5;
         }
     }
 }

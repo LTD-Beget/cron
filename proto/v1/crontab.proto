@@ -88,6 +88,7 @@ service CrontabService {
         };
     }
 
+    //Возвращает определённую команду
     rpc getExecutedCommand (GetExecutedCommandRequest) returns (GetExecutedCommandResponse) {
         option (google.api.http) = {
             get: "/v1/crontab/command/{manual_job_id}"
@@ -95,7 +96,7 @@ service CrontabService {
     }
 
     //Возвращает вывод задачи, которая была запущена через API/CP вручную
-    rpc getJobOutput (GetJobOutputRequest) returns (GetJobOutputResponse) {
+    rpc getCommandOutput (GetCommandOutputRequest) returns (GetCommandOutputResponse) {
         option (google.api.http) = {
             post: "/v1/crontab/command/{manual_job_id}"
         };
@@ -327,11 +328,11 @@ message ExecuteCommandResponse {
     }
 }
 
-message GetJobOutputRequest {
+message GetCommandOutputRequest {
     uint32 manual_job_id = 1;
 }
 
-message GetJobOutputResponse {
+message GetCommandOutputResponse {
     oneof result {
         string result = 1;
         Error error = 2;
