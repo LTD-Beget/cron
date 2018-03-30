@@ -1,0 +1,367 @@
+syntax = 'proto3';
+
+package beget.crontab.v1.crontab;
+
+import "crontab/proto/v1/structures.proto";
+import "google/api/annotations.proto";
+
+message DummyRequest{};
+message DummyResponse{};
+
+service CrontabService {
+    //Выводит полный список заданий пользователя
+    rpc findAll (FindAllRequest) returns (FindAllResponse) {
+        option (google.api.http) = {
+            get: "/v1/crontab/list/all"
+        };
+    }
+
+    //Поиск конкретной задачи
+    rpc findOne (FindOneRequest) returns (FindOneResponse) {
+        option (google.api.http) = {
+            get: "/v1/crontab/list/{id}"
+        };
+    }
+
+    //Возвращает email, на который отправляется вывод Cron-задач
+    rpc getNotificationEmail (GetNotificationEmailRequest) returns (GetNotificationEmailResponse) {
+        option (google.api.http) = {
+            get: "/v1/crontab/email"
+        };
+    }
+
+    //Устанавливает email, на который отправляется вывод Cron-задач
+    rpc setNotificationEmail (SetNotificationEmailRequest) returns (SetNotificationEmailResponse) {
+        option (google.api.http) = {
+            post: "/v1/crontab/email"
+            body: "*"
+        };
+    }
+
+    //Создание новой задачи
+    rpc createJob (CreateJobRequest) returns (CreateJobResponse) {
+        option (google.api.http) = {
+            post: "/v1/crontab/add"
+            body: "*"
+        };
+    }
+
+    //Удаление задачи
+    rpc deleteJob (DeleteJobRequest) returns (DeleteJobResponse) {
+        option (google.api.http) = {
+            delete: "/v1/crontab/delete/{id}"
+            body: "*"
+        };
+    }
+
+    //Правка существующей задачи
+    rpc editJob (EditJobRequest) returns (EditJobResponse) {
+        option (google.api.http) = {
+            patch: "/v1/crontab/edit/{id}"
+            body: "*"
+        };
+    }
+
+    //Включение задания
+    rpc enableJob (EnableJobRequest) returns (EnableJobResponse) {
+        option (google.api.http) = {
+            patch: "/v1/crontab/enable/{id}"
+        };
+    }
+
+    //Отключение задания
+    rpc disableJob (DisableJobRequest) returns (DisableJobResponse) {
+        option (google.api.http) = {
+            patch: "/v1/crontab/disable/{id}"
+        };
+    }
+
+    //Запускает задачу из имеющихся или произвольную команду
+    rpc executeCommand (ExecuteCommandRequest) returns (ExecuteCommandResponse) {
+        option (google.api.http) = {
+            post: "/v1/crontab/command"
+            body: "*"
+        };
+    }
+
+    rpc getExecuteCommandList (GetExecuteCommandListResponse) returns (GetExecuteCommandListRequest) {
+        option (google.api.http) = {
+            get: "/v1/crontab/command/all"
+        };
+    }
+
+    //Возвращает вывод
+    rpc getJobOutput (GetJobOutputRequest) returns (GetJobOutputResponse) {
+        option (google.api.http) = {
+            get: "/v1/crontab/command/{id}"
+        };
+    }
+}
+
+message FindAllRequest {
+}
+
+message FindAllResponse {
+    oneof result {
+        Success success = 1;
+        Error error = 2;
+    }
+
+    message Success {
+        repeated structures.CrontabJob crontab_job = 1;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+};
+
+message FindOneRequest {
+    uint32 id = 1;
+}
+
+message FindOneResponse {
+    oneof result {
+        structures.CrontabJob crontab_job = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}
+
+message GetNotificationEmailRequest {
+}
+
+message GetNotificationEmailResponse {
+    oneof result {
+        string email = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+            NOT_AVAILABLE = 1;
+        }
+    }
+}
+
+message SetNotificationEmailRequest {
+    string email = 1;
+}
+
+message SetNotificationEmailResponse {
+    oneof result {
+        Success success = 1;
+        Error error = 2;
+    }
+
+    message Success {
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+            EMAIL_VALIDATION_FAILED = 1;
+            NOT_AVAILABLE = 2;
+        }
+    }
+}
+
+message CreateJobRequest {
+    string minutes = 1;
+    string hours = 2;
+    string days = 3;
+    string months = 4;
+    string weekdays = 5;
+    string command = 6;
+    string comment = 7;
+}
+
+message CreateJobResponse {
+    oneof result {
+        structures.CrontabJob crontab_job = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+            NOT_AVAILABLE = 1;
+            VALIDATION_ERROR = 2;
+        }
+    }
+}
+
+message DeleteJobRequest {
+    uint32 id = 1;
+}
+
+message DeleteJobResponse {
+    oneof result {
+        Success success = 1;
+        Error error = 2;
+    }
+
+    message Success {
+    };
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}
+
+message EditJobRequest {
+    uint32 id = 1;
+    string minutes = 3;
+    string hours = 4;
+    string days = 5;
+    string months = 6;
+    string weekdays = 7;
+    string command = 8;
+    string comment = 9;
+}
+
+message EditJobResponse {
+    oneof result {
+        structures.CrontabJob crontab_job = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+            VALIDATION_ERROR = 1;
+        }
+    }
+}
+
+message EnableJobRequest {
+    uint32 id = 1;
+}
+
+message EnableJobResponse {
+    oneof result {
+        structures.CrontabJob crontab_job = 1;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}
+
+message DisableJobRequest {
+    uint32 id = 1;
+}
+
+message DisableJobResponse {
+    oneof result {
+        structures.CrontabJob crontab_job = 1;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}
+
+message ExecuteCommandRequest {
+    string command = 1;
+}
+
+message ExecuteCommandResponse {
+    oneof result {
+        uint32 id = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}
+
+message GetJobOutputRequest {
+    uint32 id = 1;
+}
+
+message GetJobOutputResponse {
+    oneof result {
+        string result = 1;
+        Error error = 2;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}
+
+message GetExecuteCommandListRequest {
+}
+
+message GetExecuteCommandListResponse {
+    oneof result {
+        Success success = 1;
+        Error error = 2;
+    }
+
+    message Success {
+        repeated structures.ExecutedCommand command = 1;
+    }
+
+    message Error {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            INTERNAL_ERROR = 0;
+        }
+    }
+}

@@ -1,0 +1,29 @@
+syntax = 'proto3';
+
+package beget.crontab.v1.structures;
+
+message CrontabJob {
+    uint32 id = 1;
+    string minutes = 2;
+    string hours = 3;
+    string day_of_month = 4;
+    string month = 5;
+    string day_of_week = 6;
+    string command = 7;
+    bool enabled = 8;
+    string comment = 9;
+}
+
+message ExecutedCommand {
+    uint32 id = 1;
+    string date = 2;
+    Status status = 3;
+
+    message Status {
+        enum Status {
+            FINISHED = 0;
+            FAILED = 1;
+            IN_PROGRESS = 2;
+        }
+    }
+}
