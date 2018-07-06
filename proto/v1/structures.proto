@@ -7,7 +7,7 @@ message CronTask {
     string command = 2; // execution command
     TaskSchedule shedule = 3; // shedule time model
     string comment = 4; // optional comment
-    bool disabled = 5; // if true: job didn't run
+    bool enabled = 5; // if false: job didn't run
 }
 
 message CronJob {
@@ -18,12 +18,11 @@ message CronJob {
     Status status = 5; // execution status model
 
     enum Status {
-        _ = 0;
-        PENDING = 1;
-        STARTED = 2;
-        SUCCESS = 3;
-        ERROR = 4;
-        TIMEOUT = 5;
+        PENDING = 0;
+        STARTED = 1;
+        SUCCESS = 2;
+        ERROR = 3;
+        TIMEOUT = 4;
     }
 }
 

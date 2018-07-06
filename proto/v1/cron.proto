@@ -92,6 +92,18 @@ service CronService {
             delete: "/v1/cron/email"
         };
     }
+
+    rpc getTask (GetTaskRequest) returns (GetTaskResponse){
+        option (google.api.http) = {
+            get: "/v1/cron/task/{id}"
+        };
+    }
+
+    rpc getJob (GetJobRequest) returns (GetJobResponse){
+        option (google.api.http) = {
+            get: "/v1/cron/job/{id}"
+        };
+    }
 }
 
 message CreateTaskRequest {
@@ -103,10 +115,10 @@ message CreateTaskRequest {
 message CreateTaskResponse {
     oneof result {
         structures.CronTask task = 1;
-        Error error = 2;
+        CreateTaskError error = 2;
     }
 
-    message Error {
+    message CreateTaskError {
         Code code = 1;
         string message = 2;
 
@@ -126,11 +138,7 @@ message DeleteTaskRequest {
     uint32 id = 1;
 }
 
-message DeleteTaskResponse {
-    Success success = 1;
-
-    message Success {}
-}
+message DeleteTaskResponse {}
 
 message UpdateTaskRequest {
     uint32 id = 1;
@@ -142,10 +150,10 @@ message UpdateTaskRequest {
 message UpdateTaskResponse {
     oneof result {
         structures.CronTask task = 1;
-        Error error = 2;
+        UpdateTaskError error = 2;
     }
 
-    message Error {
+    message UpdateTaskError {
         Code code = 1;
         string message = 2;
 
@@ -194,7 +202,7 @@ message GetJobOutputRequest {
 message GetJobOutputResponse {
     oneof result {
         CronOutput output = 1;
-        Error error = 2;
+        GetJobOutputError error = 2;
     }
 
     message CronOutput {
@@ -203,7 +211,7 @@ message GetJobOutputResponse {
         uint32 line_offset = 4; // Starting line num
     }
 
-    message Error {
+    message GetJobOutputError {
         Code code = 1;
         string message = 2;
 
@@ -218,7 +226,7 @@ message GetJobOutputResponse {
 message GetJobListRequest {}
 
 message GetJobListResponse {
-    repeated structures.CronJob task = 1;
+    repeated structures.CronJob job = 1;
 }
 
 message GetTaskListRequest {}
@@ -242,10 +250,10 @@ message SetEmailRequest {
 message SetEmailResponse {
     oneof result {
         bool success = 1;
-        Error error = 2;
+        SetEmailError error = 2;
     }
 
-    message Error {
+    message SetEmailError {
         Code code = 1;
         string message = 2;
 
@@ -260,8 +268,20 @@ message UnsetEmailRequest {
     string email = 1;
 }
 
-message UnsetEmailResponse {
-    Success success = 1;
+message UnsetEmailResponse {}
 
-    message Success {}
+message GetTaskRequest {
+    uint32 id = 1;
+}
+
+message GetTaskResponse {
+    structures.CronTask task = 1;
+}
+
+message GetJobRequest {
+    uint32 id = 1;
+}
+
+message GetJobResponse {
+    structures.CronJob job = 1;
 }
