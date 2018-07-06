@@ -1,0 +1,37 @@
+syntax = 'proto3';
+
+package beget.crontab.v1.structures;
+
+message CronTask {
+    uint32 id = 1;
+    string command = 2; // execution command
+    TaskSchedule shedule = 3; // shedule time model
+    string comment = 4; // optional comment
+    bool is_enabled = 5; // if false: job didn't run
+}
+
+message CronJob {
+    uint32 id = 1;
+    string date_create = 2; // RFC3339 Y-m-d\TH:i:sP
+    string date_complete = 3; // RFC3339 Y-m-d\TH:i:sP
+    string command = 4; // execution command
+    Status status = 5; // execution status model
+
+    enum Status {
+        _ = 0;
+        PENDING = 1;
+        STARTED = 2;
+        SUCCESS = 3;
+        ERROR = 4;
+        TIMEOUT = 5;
+    }
+}
+
+//fields with crontab syntax
+message TaskSchedule {
+    string minutes = 2;
+    string hours = 3;
+    string days = 4;
+    string months = 5;
+    string weekdays = 6;
+}

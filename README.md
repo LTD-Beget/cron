@@ -1,2 +1,2 @@
-# cron
-Public Cron API
+# crontab
+crontab public api
