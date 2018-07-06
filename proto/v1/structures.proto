@@ -7,7 +7,7 @@ message CronTask {
     string command = 2; // execution command
     TaskSchedule shedule = 3; // shedule time model
     string comment = 4; // optional comment
-    bool is_enabled = 5; // if false: job didn't run
+    bool disabled = 5; // if true: job didn't run
 }
 
 message CronJob {

@@ -187,6 +187,8 @@ message CreateJobResponse {
 
 message GetJobOutputRequest {
     uint32 id = 1;
+    uint32 line_limit = 2;  //Limit of output lines, max: 500
+    uint32 line_offset = 3; //jump to line num
 }
 
 message GetJobOutputResponse {
@@ -197,8 +199,8 @@ message GetJobOutputResponse {
 
     message CronOutput {
         repeated string row = 1;
-        uint32 limit = 2;
-        uint32 start = 4;
+        uint32 line_limit = 2; // Limit of output lines, max: 500
+        uint32 line_offset = 4; // Starting line num
     }
 
     message Error {
