@@ -1,6 +1,6 @@
 syntax = 'proto3';
 
-package beget.crontab.v1.structures;
+package beget.cron.v1.structures;
 
 message CronTask {
     uint32 id = 1;

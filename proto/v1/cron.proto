@@ -1,15 +1,15 @@
 syntax = 'proto3';
 
-package beget.crontab.v1.crontab;
+package beget.cron.v1.cron;
 
 import "google/api/annotations.proto";
-import "crontab/proto/v1/structures.proto";
+import "cron/proto/v1/structures.proto";
 
-service CrontabService {
+service CronService {
     // Create new cron task
     rpc createTask (CreateTaskRequest) returns (CreateTaskResponse) {
         option (google.api.http) = {
-            post: "/v1/crontab/task"
+            post: "/v1/cron/task"
             body: "*"
         };
     }
@@ -17,14 +17,14 @@ service CrontabService {
     // Delete cron task
     rpc deleteTask (DeleteTaskRequest) returns (DeleteTaskResponse) {
         option (google.api.http) = {
-            delete: "/v1/crontab/task/{id}"
+            delete: "/v1/cron/task/{id}"
         };
     }
 
     // Update existing cron task
     rpc updateTask (UpdateTaskRequest) returns (UpdateTaskResponse) {
         option (google.api.http) = {
-            post: "/v1/crontab/task/{id}"
+            post: "/v1/cron/task/{id}"
             body: "*"
         };
     }
@@ -32,21 +32,21 @@ service CrontabService {
     // Enable cron task
     rpc enableTask (EnableTaskRequest) returns (EnableTaskResponse) {
         option (google.api.http) = {
-            post: "/v1/crontab/task/{id}/enable"
+            post: "/v1/cron/task/{id}/enable"
         };
     }
 
     // Disable cron task
     rpc disableTask (DisableTaskRequest) returns (DisableTaskResponse) {
         option (google.api.http) = {
-            post: "/v1/crontab/task/{id}/disable"
+            post: "/v1/cron/task/{id}/disable"
         };
     }
 
     // Create job, execute command
     rpc createJob (CreateJobRequest) returns (CreateJobResponse) {
         option (google.api.http) = {
-            post: "/v1/crontab/job"
+            post: "/v1/cron/job"
             body: "*"
         };
     }
@@ -54,42 +54,42 @@ service CrontabService {
     // Get output from job execution
     rpc getJobOutput (GetJobOutputRequest) returns (GetJobOutputResponse) {
         option (google.api.http) = {
-            get: "/v1/crontab/job/{id}/output"
+            get: "/v1/cron/job/{id}/output"
         };
     }
 
     // Get job list
     rpc getJobList (GetJobListRequest) returns (GetJobListResponse) {
         option (google.api.http) = {
-            get: "/v1/crontab/job"
+            get: "/v1/cron/job"
         };
     }
 
     // Get task list
     rpc getTaskList (GetTaskListRequest) returns (GetTaskListResponse) {
         option (google.api.http) = {
-            get: "/v1/crontab/task"
+            get: "/v1/cron/task"
         };
     }
 
     // Get output email
     rpc getEmail (GetEmailRequest) returns (GetEmailResponse) {
         option (google.api.http) = {
-            get: "/v1/crontab/email"
+            get: "/v1/cron/email"
         };
     }
 
     // Change output email
     rpc setEmail (SetEmailRequest) returns (SetEmailResponse) {
         option (google.api.http) = {
-            post: "/v1/crontab/email"
+            post: "/v1/cron/email"
         };
     }
 
     // Delete output email
     rpc unsetEmail (UnsetEmailRequest) returns (UnsetEmailResponse) {
         option (google.api.http) = {
-            delete: "/v1/crontab/email"
+            delete: "/v1/cron/email"
         };
     }
 }
