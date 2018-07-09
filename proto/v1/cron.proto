@@ -1,0 +1,287 @@
+syntax = 'proto3';
+
+package beget.cron.v1.cron;
+
+import "google/api/annotations.proto";
+import "cron/proto/v1/structures.proto";
+
+service CronService {
+    // Create new cron task
+    rpc createTask (CreateTaskRequest) returns (CreateTaskResponse) {
+        option (google.api.http) = {
+            post: "/v1/cron/task"
+            body: "*"
+        };
+    }
+
+    // Delete cron task
+    rpc deleteTask (DeleteTaskRequest) returns (DeleteTaskResponse) {
+        option (google.api.http) = {
+            delete: "/v1/cron/task/{id}"
+        };
+    }
+
+    // Update existing cron task
+    rpc updateTask (UpdateTaskRequest) returns (UpdateTaskResponse) {
+        option (google.api.http) = {
+            post: "/v1/cron/task/{id}"
+            body: "*"
+        };
+    }
+
+    // Enable cron task
+    rpc enableTask (EnableTaskRequest) returns (EnableTaskResponse) {
+        option (google.api.http) = {
+            post: "/v1/cron/task/{id}/enable"
+        };
+    }
+
+    // Disable cron task
+    rpc disableTask (DisableTaskRequest) returns (DisableTaskResponse) {
+        option (google.api.http) = {
+            post: "/v1/cron/task/{id}/disable"
+        };
+    }
+
+    // Create job, execute command
+    rpc createJob (CreateJobRequest) returns (CreateJobResponse) {
+        option (google.api.http) = {
+            post: "/v1/cron/job"
+            body: "*"
+        };
+    }
+
+    // Get output from job execution
+    rpc getJobOutput (GetJobOutputRequest) returns (GetJobOutputResponse) {
+        option (google.api.http) = {
+            get: "/v1/cron/job/{id}/output"
+        };
+    }
+
+    // Get job list
+    rpc getJobList (GetJobListRequest) returns (GetJobListResponse) {
+        option (google.api.http) = {
+            get: "/v1/cron/job"
+        };
+    }
+
+    // Get task list
+    rpc getTaskList (GetTaskListRequest) returns (GetTaskListResponse) {
+        option (google.api.http) = {
+            get: "/v1/cron/task"
+        };
+    }
+
+    // Get output email
+    rpc getEmail (GetEmailRequest) returns (GetEmailResponse) {
+        option (google.api.http) = {
+            get: "/v1/cron/email"
+        };
+    }
+
+    // Change output email
+    rpc setEmail (SetEmailRequest) returns (SetEmailResponse) {
+        option (google.api.http) = {
+            post: "/v1/cron/email"
+        };
+    }
+
+    // Delete output email
+    rpc unsetEmail (UnsetEmailRequest) returns (UnsetEmailResponse) {
+        option (google.api.http) = {
+            delete: "/v1/cron/email"
+        };
+    }
+
+    rpc getTask (GetTaskRequest) returns (GetTaskResponse){
+        option (google.api.http) = {
+            get: "/v1/cron/task/{id}"
+        };
+    }
+
+    rpc getJob (GetJobRequest) returns (GetJobResponse){
+        option (google.api.http) = {
+            get: "/v1/cron/job/{id}"
+        };
+    }
+}
+
+message CreateTaskRequest {
+    structures.TaskSchedule shedule = 1;
+    string command = 2;
+    string comment = 3;
+}
+
+message CreateTaskResponse {
+    oneof result {
+        structures.CronTask task = 1;
+        CreateTaskError error = 2;
+    }
+
+    message CreateTaskError {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            _ = 0;
+            INVALID_MINUTE = 1;
+            INVALID_HOUR = 2;
+            INVALID_DAY_OF_MONTH = 3;
+            INVALID_DAY_OF_WEEK = 4;
+            INVALID_MONTH = 5;
+            INVALID_COMMAND = 6;
+        }
+    }
+}
+
+message DeleteTaskRequest {
+    uint32 id = 1;
+}
+
+message DeleteTaskResponse {}
+
+message UpdateTaskRequest {
+    uint32 id = 1;
+    structures.TaskSchedule shedule = 3;
+    string command = 4;
+    string comment = 5;
+}
+
+message UpdateTaskResponse {
+    oneof result {
+        structures.CronTask task = 1;
+        UpdateTaskError error = 2;
+    }
+
+    message UpdateTaskError {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            _ = 0;
+            INVALID_MINUTE = 1;
+            INVALID_HOUR = 2;
+            INVALID_DAY_OF_MONTH = 3;
+            INVALID_DAY_OF_WEEK = 4;
+            INVALID_MONTH = 5;
+            INVALID_COMMAND = 6;
+        }
+    }
+}
+
+message EnableTaskRequest {
+    uint32 id = 1;
+}
+
+message EnableTaskResponse {
+    structures.CronTask task = 1;
+}
+
+message DisableTaskRequest {
+    uint32 id = 1;
+}
+
+message DisableTaskResponse {
+    structures.CronTask task = 1;
+}
+
+message CreateJobRequest {
+    string command = 1;
+}
+
+message CreateJobResponse {
+    structures.CronJob job = 1;
+}
+
+message GetJobOutputRequest {
+    uint32 id = 1;
+    uint32 line_limit = 2;  //Limit of output lines, max: 500
+    uint32 line_offset = 3; //jump to line num
+}
+
+message GetJobOutputResponse {
+    oneof result {
+        CronOutput output = 1;
+        GetJobOutputError error = 2;
+    }
+
+    message CronOutput {
+        repeated string row = 1;
+        uint32 line_limit = 2; // Limit of output lines, max: 500
+        uint32 line_offset = 4; // Starting line num
+    }
+
+    message GetJobOutputError {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            _ = 0;
+            LIMIT_EXCEEDED_ERROR = 1;
+            INVALID_PARAM_ERROR = 2;
+        }
+    }
+}
+
+message GetJobListRequest {}
+
+message GetJobListResponse {
+    repeated structures.CronJob job = 1;
+}
+
+message GetTaskListRequest {}
+
+message GetTaskListResponse {
+    repeated structures.CronTask task = 1;
+}
+
+message GetEmailRequest {
+    string email = 1;
+}
+
+message GetEmailResponse {
+    string email = 1;
+}
+
+message SetEmailRequest {
+    string email = 1;
+}
+
+message SetEmailResponse {
+    oneof result {
+        bool success = 1;
+        SetEmailError error = 2;
+    }
+
+    message SetEmailError {
+        Code code = 1;
+        string message = 2;
+
+        enum Code {
+            _ = 0;
+            INVALID_EMAIL = 1;
+        }
+    }
+}
+
+message UnsetEmailRequest {
+    string email = 1;
+}
+
+message UnsetEmailResponse {}
+
+message GetTaskRequest {
+    uint32 id = 1;
+}
+
+message GetTaskResponse {
+    structures.CronTask task = 1;
+}
+
+message GetJobRequest {
+    uint32 id = 1;
+}
+
+message GetJobResponse {
+    structures.CronJob job = 1;
+}
