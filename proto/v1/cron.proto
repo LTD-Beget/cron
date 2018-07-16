@@ -54,7 +54,8 @@ service CronService {
     // Get output from job execution
     rpc getJobOutput (GetJobOutputRequest) returns (GetJobOutputResponse) {
         option (google.api.http) = {
-            get: "/v1/cron/job/{id}/output"
+            post: "/v1/cron/job/{id}/output"
+            body: "*"
         };
     }
 
@@ -102,6 +103,12 @@ service CronService {
     rpc getJob (GetJobRequest) returns (GetJobResponse){
         option (google.api.http) = {
             get: "/v1/cron/job/{id}"
+        };
+    }
+
+    rpc getSystemTime (GetSystemTimeRequest) returns (GetSystemTimeResponse){
+        option (google.api.http) = {
+            get: "/v1/cron/time"
         };
     }
 }
@@ -235,9 +242,7 @@ message GetTaskListResponse {
     repeated structures.CronTask task = 1;
 }
 
-message GetEmailRequest {
-    string email = 1;
-}
+message GetEmailRequest {}
 
 message GetEmailResponse {
     string email = 1;
@@ -264,9 +269,7 @@ message SetEmailResponse {
     }
 }
 
-message UnsetEmailRequest {
-    string email = 1;
-}
+message UnsetEmailRequest {}
 
 message UnsetEmailResponse {}
 
@@ -284,4 +287,10 @@ message GetJobRequest {
 
 message GetJobResponse {
     structures.CronJob job = 1;
+}
+
+message GetSystemTimeRequest {}
+
+message GetSystemTimeResponse {
+    string time = 1; // RFC3339 Y-m-d\TH:i:sP
 }
