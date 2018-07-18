@@ -84,6 +84,7 @@ service CronService {
     rpc setEmail (SetEmailRequest) returns (SetEmailResponse) {
         option (google.api.http) = {
             post: "/v1/cron/email"
+            body: "*"
         };
     }
 
