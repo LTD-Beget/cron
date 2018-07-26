@@ -115,7 +115,7 @@ service CronService {
 }
 
 message CreateTaskRequest {
-    structures.TaskSchedule shedule = 1;
+    structures.TaskSchedule schedule = 1;
     string command = 2;
     string comment = 3;
 }
@@ -150,7 +150,7 @@ message DeleteTaskResponse {}
 
 message UpdateTaskRequest {
     uint32 id = 1;
-    structures.TaskSchedule shedule = 3;
+    structures.TaskSchedule schedule = 3;
     string command = 4;
     string comment = 5;
 }

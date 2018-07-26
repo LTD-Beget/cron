@@ -5,7 +5,7 @@ package beget.cron.v1.structures;
 message CronTask {
     uint32 id = 1;
     string command = 2; // execution command
-    TaskSchedule shedule = 3; // shedule time model
+    TaskSchedule schedule = 3; // schedule time model
     string comment = 4; // optional comment
     bool enabled = 5; // if false: job didn't run
 }
