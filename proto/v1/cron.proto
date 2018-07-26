@@ -138,6 +138,7 @@ message CreateTaskResponse {
             INVALID_DAY_OF_WEEK = 4;
             INVALID_MONTH = 5;
             INVALID_COMMAND = 6;
+            EMPTY_SCHEDULE = 7;
         }
     }
 }
@@ -173,6 +174,7 @@ message UpdateTaskResponse {
             INVALID_DAY_OF_WEEK = 4;
             INVALID_MONTH = 5;
             INVALID_COMMAND = 6;
+            EMPTY_SCHEDULE = 7;
         }
     }
 }
